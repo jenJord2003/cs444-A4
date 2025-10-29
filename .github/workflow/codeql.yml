@@ -1,16 +1,11 @@
-name: "CodeQL"
+name: CodeQL
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-  schedule:
-    - cron: '0 3 * * 1'   # weekly
+  push: { branches: [ "main" ] }
+  pull_request: { branches: [ "main" ] }
 
 jobs:
   analyze:
-    name: Analyze (C/C++)
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -20,22 +15,31 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'cpp' ]   # C/C++
+        language: [ 'cpp' ]
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
-      with:
-        languages: ${{ matrix.language }}
-        queries: +security-and-quality
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v4
+        with:
+          languages: ${{ matrix.language }}
+          queries: +security-and-quality
 
-    - name: Autoconfigure build
-      uses: github/codeql-action/autobuild@v3
+      # ⬇️ Manual build instead of autobuild
+      - name: Install toolchain
+        run: sudo apt-get update && sudo apt-get install -y g++
 
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
-      with:
-        category: "/language:${{matrix.language}}"
+      - name: Build (compile your sources)
+        run: |
+          g++ -std=c++17 -Wall -Wextra -O2 -c p3.cpp
+          g++ -std=c++17 -Wall -Wextra -O2 p3.cpp main.cpp -o app
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v4
+        with:
+          category: "/language:${{matrix.language}}"
+
+
+   
