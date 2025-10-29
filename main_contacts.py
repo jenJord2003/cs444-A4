@@ -13,9 +13,17 @@ def insert_after(contact_node, new_contact_node):
     contact_node.next_contact_node = new_contact_node
 
 
+def mask_phone(phone):
+    """Mask all but the last 2 digits of a phone number."""
+    if not phone or len(phone) <= 2:
+        return '*' * len(phone)
+    num_mask = '*' * (len(phone) - 2) + phone[-2:]
+    return num_mask
+
+
 def print_contact_node(contact_node):
     print(f"Name: {contact_node.contact_name}")
-    print(f"Phone number: {contact_node.contact_phone_num}")
+    print(f"Phone number: {mask_phone(contact_node.contact_phone_num)}")
 
 
 def main():
@@ -32,7 +40,7 @@ def main():
 
     print("\nPerson list:")
     for i, c in enumerate(contacts, start=1):
-        print(f"Person {i}: {c.contact_name}, {c.contact_phone_num}")
+        print(f"Person {i}: {c.contact_name}, {mask_phone(c.contact_phone_num)}")
 
     print("\nCONTACT LIST")
     current = contacts[0]
