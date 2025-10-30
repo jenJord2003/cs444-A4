@@ -33,12 +33,6 @@ def insert_after(contact_node, new_contact_node):
 
 def print_contact_node(contact_node):
     print(f"Name: {contact_node.contact_name}")
-    print(f"Phone number: {mask_phone(contact_node.contact_phone_num)}")  # masked
-
-# def print_contact_node(contact_node):
-#     print(f"Name: {contact_node.contact_name}")
-#     print(f"Phone number: {contact_node.contact_phone_num}")
-
 
 def main():
     contacts = []
@@ -54,8 +48,7 @@ def main():
 
     print("\nPerson list:")
     for i, c in enumerate(contacts, start=1):
-       # print(f"Person {i}: {c.contact_name}, {c.contact_phone_num}")
-        print(f"Person {i}: {c.contact_name}, {mask_phone(c.contact_phone_num)}")
+        print(f"Person {i}: {c.contact_name}")
 
 
     print("\nCONTACT LIST")
