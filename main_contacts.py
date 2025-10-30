@@ -1,21 +1,43 @@
 # main_contacts.py
 # Translation of main.c (ContactNode linked list)
 
+
+
 class ContactNode:
     def __init__(self, name: str, phone: str):
         self.contact_name = name
         self.contact_phone_num = phone
         self.next_contact_node = None
 
+def mask_phone(num: str, keep_last: int = 4) -> str:
+    # keeps last N digits; masks the rest (leaves non-digits as-is)
+    digits = [c for c in num if c.isdigit()]
+    if len(digits) <= keep_last:
+        return "*" * max(0, len(digits) - 1) + (digits[-1] if digits else "")
+    masked = "*" * (len(digits) - keep_last) + "".join(digits[-keep_last:])
+    # reinsert punctuation roughly (simple approach)
+    out = []
+    d_i = 0
+    for c in num:
+        if c.isdigit():
+            out.append(masked[d_i])
+            d_i += 1
+        else:
+            out.append(c)
+    return "".join(out)
+
 
 def insert_after(contact_node, new_contact_node):
     new_contact_node.next_contact_node = contact_node.next_contact_node
     contact_node.next_contact_node = new_contact_node
 
-
 def print_contact_node(contact_node):
     print(f"Name: {contact_node.contact_name}")
-    print(f"Phone number: {contact_node.contact_phone_num}")
+    print(f"Phone number: {mask_phone(contact_node.contact_phone_num)}")  # masked
+
+# def print_contact_node(contact_node):
+#     print(f"Name: {contact_node.contact_name}")
+#     print(f"Phone number: {contact_node.contact_phone_num}")
 
 
 def main():
@@ -32,7 +54,9 @@ def main():
 
     print("\nPerson list:")
     for i, c in enumerate(contacts, start=1):
-        print(f"Person {i}: {c.contact_name}, {c.contact_phone_num}")
+       # print(f"Person {i}: {c.contact_name}, {c.contact_phone_num}")
+        print(f"Person {i}: {c.contact_name}, {mask_phone(c.contact_phone_num)}")
+
 
     print("\nCONTACT LIST")
     current = contacts[0]

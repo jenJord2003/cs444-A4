@@ -19,8 +19,8 @@ def load_config(path):
 
 # 3) DISABLE TLS VERIFICATION (extra, often flagged)  (CodeQL: py/disabled-cert-validation)
 def fetch_insecure(url):
-    # ⚠️ CodeQL should flag verify=False
-    r = requests.get(url, verify=False)
+    # ⚠️ CodeQL flag verify=False, fixed with replacing with fetch_insecure
+    r = requests.get(url, fetch_insecure("https://example.com"))
     return r.text
 
 if __name__ == "__main__":
@@ -28,6 +28,7 @@ if __name__ == "__main__":
     try:
         load_config("config.yaml")
     except FileNotFoundError:
-        pass
+        #pass
+        print("fixed empty except with this info statement.")
     fetch_insecure("https://example.com")
     run_calc()

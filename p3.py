@@ -4,8 +4,8 @@
 
 from __future__ import annotations
 from dataclasses import dataclass, field
-from typing import Optional, Iterable, Tuple, List, Any
-
+from typing import Optional, Iterable, Tuple
+# fixed with removing unused libraries
 
 @dataclass
 class Person:
